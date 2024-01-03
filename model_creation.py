@@ -1,6 +1,7 @@
 import datetime as dt
 import numpy as np
 import matplotlib.pyplot as plt
+import pickle
 
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, LSTM
@@ -14,6 +15,10 @@ from functions import percent_test, process_features, process_target
 """
 Disclaimer: DO NOT use this program as investing advice. This project merely utilize a ML model to 
 predict POSSIBLE stock prices in the near future. Use the resulting information at your own discretion.
+
+Note- If the result of percentage test is 1, that usually implies the predicted values are quite a bit 
+higher or lower than the actual values. I would recommend rerunning the program. 
+Adjust the DataFrame and hyperparameters as needed.
 """
 
 
@@ -40,6 +45,14 @@ macd_data, macd_scaler = process_features((m_line, m_signal), divide_RSI=False, 
 y_data, y_scaler = process_target(y_data, normalize=True)  # Process the target label
 x_data = np.concatenate((x_data, macd_data), axis=1)  # Combine the two np array into a single dataset
 
+with open("x_scaler.pkl", "wb") as file:
+    pickle.dump(x_scaler, file)
+
+with open("macd_scaler.pkl", "wb") as file:
+    pickle.dump(macd_scaler, file)
+
+with open("y_scaler.pkl", "wb") as file:
+    pickle.dump(y_scaler, file)
 
 days = 60
 x_train, x_valid, x_test = x_data[:-2*days], x_data[-2*days:-days], x_data[-days:]  # Split the features
@@ -49,11 +62,11 @@ y_train, y_valid, y_test = y_data[:-2*days], y_data[-2*days:-days], y_data[-days
 # Creating The Model
 model = Sequential()
 
-model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+model.add(LSTM(units=24, return_sequences=True, input_shape=(x_train.shape[1], 1)))
 model.add(Dropout(0.2))
-model.add(LSTM(units=50, return_sequences=True))
+model.add(LSTM(units=24, return_sequences=True))
 model.add(Dropout(0.2))
-model.add(LSTM(units=50))
+model.add(LSTM(units=24))
 model.add(Dropout(0.2))
 model.add(Dense(units=1))  # Prediction of the next closing price
 
@@ -81,5 +94,5 @@ while ask.lower() != "n" and ask.lower() != "y":
     ask = input("Save? Y or N: ")
 
 if ask.lower() == "y":
-    value = input("Enter model percentage result: ")
-    model.save(f"Model_{value}")
+    value_date = input("Enter model percentage result and date: ")
+    model.save(f"Model_{value_date}")

@@ -63,7 +63,7 @@ def ema(values: np.ndarray, days: int) -> list[float]:
 
     total = sum(values[:days])  # Temporary variable that holds the sum from 0:days
     result = [0.0 for _ in range(days - 1)]  # Placeholders up to days-1
-    result.append(total / days)  # First value of EMA would be the aerage of the days
+    result.append(total / days)  # First value of EMA would be the average of the days
     smoothing = 2 / (days + 1)  # This is the smoothing factor
     # Calculation of EMA is EMA_t = (1-α)*EMA_(t-1) + α*Close_t
     # Where Today's EMA is (1 - smoothing factor), α, multiplied by yesterday's EMA plus α time today's Closing Price
