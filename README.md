@@ -11,6 +11,8 @@ This project utilizes machine learning, specifically LSTM (Long Short-Term Memor
 - `model_creation.py`: Main script for model training and evaluation.
 - `stock_indicators.py`: Module for calculating technical indicators.
 - `functions.py`: Module containing utility functions.
+- `next_day_prediction.py`: Module for predicting next day's closing price of specified stock 
+
 
 
 ## Details
