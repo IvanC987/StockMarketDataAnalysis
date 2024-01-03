@@ -1,9 +1,10 @@
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 import pandas as pd
+from typing import List
 
 
-def percent_test(prediction: list[int] | np.array, actual: list[int] | np.array) -> float:
+def percent_test(prediction: List[int] | np.array, actual: List[int] | np.array) -> float:
     """
     Calculate the overall return percentage based on predicted and actual stock prices.
     If tomorrow's predicted price is higher than today's, we sell at min(predicted, tomorrow's_close)
